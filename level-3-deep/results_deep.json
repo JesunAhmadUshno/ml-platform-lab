@@ -1,0 +1,387 @@
+{
+  "action_counts_by_pass": {
+    "pass1": {
+      "create": 3,
+      "delete": 0,
+      "replace": 0
+    },
+    "pass2": {
+      "create": 0,
+      "delete": 0,
+      "replace": 0
+    },
+    "pass3": {
+      "create": 0,
+      "delete": 0,
+      "replace": 3
+    },
+    "pass4": {
+      "create": 1,
+      "delete": 1,
+      "replace": 1
+    }
+  },
+  "action_log": [
+    {
+      "action": "create",
+      "from_version": null,
+      "pass": 1,
+      "pod": "chat-endpoint-0",
+      "seq": 1,
+      "to_version": "v1"
+    },
+    {
+      "action": "create",
+      "from_version": null,
+      "pass": 1,
+      "pod": "chat-endpoint-1",
+      "seq": 2,
+      "to_version": "v1"
+    },
+    {
+      "action": "create",
+      "from_version": null,
+      "pass": 1,
+      "pod": "chat-endpoint-2",
+      "seq": 3,
+      "to_version": "v1"
+    },
+    {
+      "action": "replace",
+      "from_version": "v1",
+      "pass": 3,
+      "pod": "chat-endpoint-0",
+      "seq": 4,
+      "to_version": "v2"
+    },
+    {
+      "action": "replace",
+      "from_version": "v1",
+      "pass": 3,
+      "pod": "chat-endpoint-1",
+      "seq": 5,
+      "to_version": "v2"
+    },
+    {
+      "action": "replace",
+      "from_version": "v1",
+      "pass": 3,
+      "pod": "chat-endpoint-2",
+      "seq": 6,
+      "to_version": "v2"
+    },
+    {
+      "action": "create",
+      "from_version": null,
+      "pass": 4,
+      "pod": "chat-endpoint-1",
+      "seq": 7,
+      "to_version": "v2"
+    },
+    {
+      "action": "replace",
+      "from_version": "v1",
+      "pass": 4,
+      "pod": "chat-endpoint-2",
+      "seq": 8,
+      "to_version": "v2"
+    },
+    {
+      "action": "delete",
+      "from_version": "v2",
+      "pass": 4,
+      "pod": "chat-endpoint-99",
+      "seq": 9,
+      "to_version": null
+    }
+  ],
+  "cluster_upgrade": {
+    "final_control_plane_version": "1.30",
+    "final_kubelet_versions": {
+      "cp-0": "1.30",
+      "worker-0": "1.30",
+      "worker-1": "1.30"
+    },
+    "from_version": "1.29",
+    "post_checks": [
+      {
+        "name": "control plane at target version",
+        "pass": true
+      },
+      {
+        "name": "all kubelets at target version",
+        "pass": true
+      },
+      {
+        "name": "all nodes Ready",
+        "pass": true
+      },
+      {
+        "name": "endpoint still healthy",
+        "pass": true
+      }
+    ],
+    "pre_checks": [
+      {
+        "name": "control plane at start version",
+        "pass": true
+      },
+      {
+        "name": "all nodes Ready",
+        "pass": true
+      },
+      {
+        "name": "kubelet skew within one minor",
+        "pass": true
+      },
+      {
+        "name": "endpoint healthy before upgrade",
+        "pass": true
+      }
+    ],
+    "rollback_note": "No rollback was needed: every post-check passed. If a post-check had failed, the simulated rollback would restore the etcd snapshot taken in step 2, return the control plane to 1.29, and re-run the pre-checks before any second attempt. This note describes the simulated procedure only; no real rollback was performed.",
+    "rollback_triggered": false,
+    "simulated": true,
+    "status": "Succeeded",
+    "steps": [
+      "pre-checks complete",
+      "backup etcd snapshot (simulated)",
+      "upgrade control plane cp-0 from 1.29 to 1.30",
+      "upgrade kubelet on cp-0 from 1.29 to 1.30",
+      "drain worker-0",
+      "upgrade kubelet on worker-0 from 1.29 to 1.30",
+      "uncordon worker-0",
+      "drain worker-1",
+      "upgrade kubelet on worker-1 from 1.29 to 1.30",
+      "uncordon worker-1",
+      "post-checks complete"
+    ],
+    "to_version": "1.30"
+  },
+  "cost_model": {
+    "assumptions": {
+      "endpoint_pods_share_node_cost": true,
+      "modelled_storage_usd_per_month": 10,
+      "modelled_usd_per_node_per_month": 40,
+      "nodes": 3
+    },
+    "label": "modelled, illustrative only - not real cloud prices and not real spend",
+    "node_cost_usd_per_month": 120,
+    "storage_cost_usd_per_month": 10,
+    "total_modelled_usd_per_month": 130
+  },
+  "endpoint_healthy_final": true,
+  "endpoint_spec": {
+    "cpu_req_m": 500,
+    "declared_version": "v2",
+    "mem_req_mib": 1024,
+    "model": "tiny-gpt",
+    "name": "chat-endpoint",
+    "namespace": "team-serve",
+    "replicas": 3
+  },
+  "final_pods": [
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-0",
+      "status": "Running",
+      "version": "v2"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-1",
+      "status": "Running",
+      "version": "v2"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-2",
+      "status": "Running",
+      "version": "v2"
+    }
+  ],
+  "level": "Deep",
+  "note": "Deep-level simulation on the Muse VM. No real cluster, operator, CRD application, or version upgrade was contacted or run. The endpoint, the controller, the drill cluster, and its upgrade are simulated objects, labelled as such. Cost figures are modelled and illustrative only, with invented unit prices; no real cloud price and no real spend is claimed.",
+  "pass_actions": {
+    "pass1": [
+      {
+        "action": "create",
+        "from_version": null,
+        "pass": 1,
+        "pod": "chat-endpoint-0",
+        "seq": 1,
+        "to_version": "v1"
+      },
+      {
+        "action": "create",
+        "from_version": null,
+        "pass": 1,
+        "pod": "chat-endpoint-1",
+        "seq": 2,
+        "to_version": "v1"
+      },
+      {
+        "action": "create",
+        "from_version": null,
+        "pass": 1,
+        "pod": "chat-endpoint-2",
+        "seq": 3,
+        "to_version": "v1"
+      }
+    ],
+    "pass2": [],
+    "pass3": [
+      {
+        "action": "replace",
+        "from_version": "v1",
+        "pass": 3,
+        "pod": "chat-endpoint-0",
+        "seq": 4,
+        "to_version": "v2"
+      },
+      {
+        "action": "replace",
+        "from_version": "v1",
+        "pass": 3,
+        "pod": "chat-endpoint-1",
+        "seq": 5,
+        "to_version": "v2"
+      },
+      {
+        "action": "replace",
+        "from_version": "v1",
+        "pass": 3,
+        "pod": "chat-endpoint-2",
+        "seq": 6,
+        "to_version": "v2"
+      }
+    ],
+    "pass4": [
+      {
+        "action": "create",
+        "from_version": null,
+        "pass": 4,
+        "pod": "chat-endpoint-1",
+        "seq": 7,
+        "to_version": "v2"
+      },
+      {
+        "action": "replace",
+        "from_version": "v1",
+        "pass": 4,
+        "pod": "chat-endpoint-2",
+        "seq": 8,
+        "to_version": "v2"
+      },
+      {
+        "action": "delete",
+        "from_version": "v2",
+        "pass": 4,
+        "pod": "chat-endpoint-99",
+        "seq": 9,
+        "to_version": null
+      }
+    ]
+  },
+  "project": "P20 ml-platform-lab",
+  "simulated": true,
+  "state_after_pass1": [
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-0",
+      "status": "Running",
+      "version": "v1"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-1",
+      "status": "Running",
+      "version": "v1"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-2",
+      "status": "Running",
+      "version": "v1"
+    }
+  ],
+  "state_after_pass3": [
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-0",
+      "status": "Running",
+      "version": "v2"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-1",
+      "status": "Running",
+      "version": "v2"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-2",
+      "status": "Running",
+      "version": "v2"
+    }
+  ],
+  "state_before_pass4": [
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-0",
+      "status": "Running",
+      "version": "v2"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-2",
+      "status": "Running",
+      "version": "v1"
+    },
+    {
+      "cpu_req_m": 500,
+      "mem_req_mib": 1024,
+      "name": "chat-endpoint-99",
+      "status": "Running",
+      "version": "v2"
+    }
+  ],
+  "summary": {
+    "cluster_from_version": "1.29",
+    "cluster_post_checks_passed": 4,
+    "cluster_pre_checks_passed": 4,
+    "cluster_to_version": "1.30",
+    "cluster_upgrade_steps": 11,
+    "creates": 4,
+    "deletes": 1,
+    "final_declared_version": "v2",
+    "final_pods": 3,
+    "final_pods_at_declared": 3,
+    "final_running_cpu_m": 1500,
+    "final_running_mem_mib": 3072,
+    "modelled_total_usd_per_month": 130,
+    "reconcile_passes": 4,
+    "replaces": 4,
+    "rollback_triggered": false,
+    "total_actions": 9,
+    "version_log_entries": 1
+  },
+  "version_upgrade_log": [
+    {
+      "endpoint": "chat-endpoint",
+      "from_version": "v1",
+      "to_version": "v2"
+    }
+  ]
+}
