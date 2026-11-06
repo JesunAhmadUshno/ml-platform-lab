@@ -2,7 +2,7 @@
 
 ML platform operations: Kubernetes, containers, GPU scheduling, a small operator.
 
-Status: Learn DONE 2026-11-05 (early, Sprint 4 pull). Build and Deep not started.
+Status: Learn DONE and Build DONE 2026-11-05 (early, Sprint 4 pull). Deep not started. Both levels are simulations, labelled as such: no real cluster was contacted at either level.
 Project: P20. Fleet node: BlackBoxV2, BlackBoxV3, Dell R610 (cluster). Wave: Wave 6.
 
 ## Start here
@@ -23,6 +23,7 @@ Project: P20. Fleet node: BlackBoxV2, BlackBoxV3, Dell R610 (cluster). Wave: Wav
 | Test | Result |
 | --- | --- |
 | Learn simulated cluster scenario (stdlib, Muse VM, simulated and teaching only) | 10 pods created, 7 Running, 1 Pending, 2 Deleted; final endpoints 3; total running requests 4750m cpu and 4864 MiB; ConfigMap rollout leaves 2 api pods stale at MAX_BATCH 8 and 1 fresh at 16. Full record: level-1-learn/results_learn.json and level-1-learn/README.md. |
+| Build simulated platform scenario (stdlib, Muse VM, simulated only, no real cluster) | 11 pods admitted, 2 quota rejections; 3 jobs finish 2 Succeeded and 1 Failed over 5 attempts, 2 retries, 9 ticks; GPU pods placed on both GPU nodes; plain and KServe-style services at 2 endpoints each routing 10 requests at 5 per endpoint; final Running 4 pods at 5000m cpu and 10240 MiB. Full record: level-2-build/results_build.json and level-2-build/README.md. |
 
 ## Novelty
 
