@@ -1,23 +1,36 @@
-name: ci
-on: [push, pull_request]
+name: CI
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
 jobs:
-  test:
+  check:
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         python-version: ["3.11", "3.12"]
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - uses: actions/checkout@v7
+      - uses: actions/setup-python@v7
         with:
           python-version: ${{ matrix.python-version }}
+      - name: Install ruff
+        run: python -m pip install ruff
+      - name: Lint (ruff, scope in ruff.toml)
+        run: ruff check .
       - name: scaffold smoke test
         run: python tests/test_smoke.py
-      - name: Learn tests
+      - name: level 1 learn tests
         run: python tests/test_learn_platform.py
-      - name: Build tests
+      - name: level 1 learn run
+        run: python level-1-learn/run_learn.py
+      - name: level 2 build tests
         run: python tests/test_build_platform.py
-      - name: Deep tests
+      - name: level 2 build run
+        run: python level-2-build/run_build.py
+      - name: level 3 deep tests
         run: python tests/test_deep_platform.py
-      - name: Deep runner
+      - name: level 3 deep run
         run: python level-3-deep/run_deep.py

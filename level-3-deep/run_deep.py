@@ -22,8 +22,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from deep_operator import (ClusterUpgrade, Controller, DrillNode,  # noqa: E402
-                      EndpointPod, ModelEndpoint, cost_model)
+from deep_operator import ClusterUpgrade, Controller, DrillNode, EndpointPod, ModelEndpoint, cost_model  # noqa: E402
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 
