@@ -17,3 +17,7 @@ jobs:
         run: python tests/test_learn_platform.py
       - name: Build tests
         run: python tests/test_build_platform.py
+      - name: Deep tests
+        run: python tests/test_deep_platform.py
+      - name: Deep runner
+        run: python level-3-deep/run_deep.py
