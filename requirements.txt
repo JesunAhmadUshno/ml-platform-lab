@@ -1,0 +1,3 @@
+# ml-platform-lab runs on the Python standard library only.
+# This file exists so Dependabot pip updates have a manifest to watch.
+# If a real dependency is ever added, it is pinned here.

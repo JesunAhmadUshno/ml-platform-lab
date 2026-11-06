@@ -29,8 +29,7 @@ import os
 import sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from platform import (Cluster, InferenceService, Job, Namespace,
-                      Node, Pod, Service, Taint, Toleration)
+from platform import Cluster, InferenceService, Job, Namespace, Node, Pod, Service, Taint, Toleration
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 GPU_TOLERATION = [Toleration("gpu", "NoSchedule")]

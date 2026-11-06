@@ -9,8 +9,7 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "level-3-deep"))
 
-from deep_operator import (ClusterUpgrade, Controller, DrillNode,  # noqa: E402
-                           EndpointPod, ModelEndpoint)
+from deep_operator import ClusterUpgrade, Controller, DrillNode, EndpointPod, ModelEndpoint  # noqa: E402
 from run_deep import build_scenario  # noqa: E402
 
 RESULTS = build_scenario()
