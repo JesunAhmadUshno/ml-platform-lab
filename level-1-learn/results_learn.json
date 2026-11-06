@@ -1,0 +1,227 @@
+{
+  "endpoints_after_heal": [
+    "api-0",
+    "api-2",
+    "api-3"
+  ],
+  "endpoints_final": [
+    "api-2",
+    "api-3",
+    "api-4"
+  ],
+  "endpoints_initial": [
+    "api-0",
+    "api-1",
+    "api-2"
+  ],
+  "heal_created": [
+    "api-3"
+  ],
+  "heal_placement": {
+    "api-3": "node-r610"
+  },
+  "huge_pod": {
+    "reason": "Insufficient cpu or memory on every node",
+    "status": "Pending"
+  },
+  "initial_placement": {
+    "api-0": "node-r610",
+    "api-1": "node-v2",
+    "api-2": "node-v3",
+    "debug": "node-v3",
+    "worker-0": "node-r610",
+    "worker-1": "node-v2"
+  },
+  "level": "Learn",
+  "node_usage_final": {
+    "node-r610": {
+      "cpu_m": 2000,
+      "mem_mib": 2048,
+      "pods": [
+        "api-3",
+        "api-4",
+        "worker-0"
+      ]
+    },
+    "node-v2": {
+      "cpu_m": 1000,
+      "mem_mib": 1024,
+      "pods": [
+        "worker-1"
+      ]
+    },
+    "node-v3": {
+      "cpu_m": 1750,
+      "mem_mib": 1792,
+      "pods": [
+        "api-2",
+        "debug",
+        "worker-2"
+      ]
+    }
+  },
+  "note": "Teaching simulation on the Muse VM. Node names stand for the fleet nodes (BlackBoxV2, BlackBoxV3, Dell R610); capacities are teaching values, not measured live cluster state.",
+  "pods_final": [
+    {
+      "cpu_m": 500,
+      "max_batch": "8",
+      "mem_mib": 512,
+      "name": "api-0",
+      "node": null,
+      "owner": "api",
+      "reason": null,
+      "status": "Deleted"
+    },
+    {
+      "cpu_m": 500,
+      "max_batch": "8",
+      "mem_mib": 512,
+      "name": "api-1",
+      "node": null,
+      "owner": "api",
+      "reason": null,
+      "status": "Deleted"
+    },
+    {
+      "cpu_m": 500,
+      "max_batch": "8",
+      "mem_mib": 512,
+      "name": "api-2",
+      "node": "node-v3",
+      "owner": "api",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_m": 500,
+      "max_batch": "8",
+      "mem_mib": 512,
+      "name": "api-3",
+      "node": "node-r610",
+      "owner": "api",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_m": 500,
+      "max_batch": "16",
+      "mem_mib": 512,
+      "name": "api-4",
+      "node": "node-r610",
+      "owner": "api",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_m": 250,
+      "max_batch": null,
+      "mem_mib": 256,
+      "name": "debug",
+      "node": "node-v3",
+      "owner": null,
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_m": 16000,
+      "max_batch": null,
+      "mem_mib": 1024,
+      "name": "huge",
+      "node": null,
+      "owner": null,
+      "reason": "Insufficient cpu or memory on every node",
+      "status": "Pending"
+    },
+    {
+      "cpu_m": 1000,
+      "max_batch": null,
+      "mem_mib": 1024,
+      "name": "worker-0",
+      "node": "node-r610",
+      "owner": "worker",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_m": 1000,
+      "max_batch": null,
+      "mem_mib": 1024,
+      "name": "worker-1",
+      "node": "node-v2",
+      "owner": "worker",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_m": 1000,
+      "max_batch": null,
+      "mem_mib": 1024,
+      "name": "worker-2",
+      "node": "node-v3",
+      "owner": "worker",
+      "reason": null,
+      "status": "Running"
+    }
+  ],
+  "project": "P20 ml-platform-lab",
+  "rollout_created": [
+    "api-4"
+  ],
+  "rollout_placement": {
+    "api-4": "node-r610"
+  },
+  "routing_6_requests": {
+    "api-0": 2,
+    "api-1": 2,
+    "api-2": 2
+  },
+  "scale_created": [
+    "worker-2"
+  ],
+  "scale_placement": {
+    "worker-2": "node-v3"
+  },
+  "simulated": true,
+  "stale_before_rollout": [
+    "api-0",
+    "api-2",
+    "api-3"
+  ],
+  "summary": {
+    "api_pods_fresh_max_batch_16": 1,
+    "api_pods_stale_max_batch_8": 2,
+    "endpoints_final_count": 3,
+    "pods_created_total": 10,
+    "pods_deleted": 2,
+    "pods_pending": 1,
+    "pods_running": 7,
+    "retries_or_recreates": 2,
+    "total_running_cpu_m": 4750,
+    "total_running_mem_mib": 4864
+  },
+  "usage_after_delete_api_1": {
+    "node-r610": {
+      "cpu_m": 1500,
+      "mem_mib": 1536,
+      "pods": [
+        "api-0",
+        "worker-0"
+      ]
+    },
+    "node-v2": {
+      "cpu_m": 1000,
+      "mem_mib": 1024,
+      "pods": [
+        "worker-1"
+      ]
+    },
+    "node-v3": {
+      "cpu_m": 750,
+      "mem_mib": 768,
+      "pods": [
+        "api-2",
+        "debug"
+      ]
+    }
+  }
+}

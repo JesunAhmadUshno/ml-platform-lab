@@ -2,7 +2,7 @@
 
 ML platform operations: Kubernetes, containers, GPU scheduling, a small operator.
 
-Status: SCAFFOLD (Wave 0, ROADMAP-V3-BATCH, 2026-11-04). Scaffold is not built. No results exist yet.
+Status: Learn DONE 2026-11-05 (early, Sprint 4 pull). Build and Deep not started.
 Project: P20. Fleet node: BlackBoxV2, BlackBoxV3, Dell R610 (cluster). Wave: Wave 6.
 
 ## Start here
@@ -22,7 +22,7 @@ Project: P20. Fleet node: BlackBoxV2, BlackBoxV3, Dell R610 (cluster). Wave: Wav
 
 | Test | Result |
 | --- | --- |
-| NO RESULTS YET | No measurement has run. This table fills only with measured numbers, with method. |
+| Learn simulated cluster scenario (stdlib, Muse VM, simulated and teaching only) | 10 pods created, 7 Running, 1 Pending, 2 Deleted; final endpoints 3; total running requests 4750m cpu and 4864 MiB; ConfigMap rollout leaves 2 api pods stale at MAX_BATCH 8 and 1 fresh at 16. Full record: level-1-learn/results_learn.json and level-1-learn/README.md. |
 
 ## Novelty
 
