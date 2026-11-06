@@ -11,8 +11,8 @@ import sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "level-2-build"))
 
-from platform import (Cluster, InferenceService, Job, Namespace,  # noqa: E402
-                      Node, Pod, Service, Taint, Toleration)
+from platform import Cluster, InferenceService, Job, Namespace, Node, Pod, Service, Taint, Toleration  # noqa: E402
+
 from run_build import build_scenario  # noqa: E402
 
 RESULTS = build_scenario()
