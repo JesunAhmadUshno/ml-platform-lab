@@ -1,0 +1,377 @@
+{
+  "first_attempt_placement": {
+    "train-doomed": "node-cpu-a",
+    "train-flaky": "node-gpu-b",
+    "train-v1": "node-gpu-a"
+  },
+  "jobs": [
+    {
+      "attempts": 1,
+      "cpu_req_m": 4000,
+      "gpu": 1,
+      "mem_req_mib": 8192,
+      "name": "train-v1",
+      "namespace": "team-train",
+      "pod_names": [
+        "train-v1-0"
+      ],
+      "retries": 0,
+      "status": "Succeeded",
+      "ticks_total": 3
+    },
+    {
+      "attempts": 2,
+      "cpu_req_m": 2000,
+      "gpu": 1,
+      "mem_req_mib": 4096,
+      "name": "train-flaky",
+      "namespace": "team-train",
+      "pod_names": [
+        "train-flaky-0",
+        "train-flaky-1"
+      ],
+      "retries": 1,
+      "status": "Succeeded",
+      "ticks_total": 4
+    },
+    {
+      "attempts": 2,
+      "cpu_req_m": 1000,
+      "gpu": 0,
+      "mem_req_mib": 2048,
+      "name": "train-doomed",
+      "namespace": "team-train",
+      "pod_names": [
+        "train-doomed-0",
+        "train-doomed-1"
+      ],
+      "retries": 1,
+      "status": "Failed",
+      "ticks_total": 2
+    }
+  ],
+  "level": "Build",
+  "namespace_running_final": {
+    "team-sandbox": {
+      "cpu_m": 0,
+      "gpu": 0,
+      "mem_mib": 0,
+      "pods": 0
+    },
+    "team-serve": {
+      "cpu_m": 5000,
+      "gpu": 0,
+      "mem_mib": 10240,
+      "pods": 4
+    },
+    "team-train": {
+      "cpu_m": 0,
+      "gpu": 0,
+      "mem_mib": 0,
+      "pods": 0
+    }
+  },
+  "node_usage_final": {
+    "node-cpu-a": {
+      "cpu_m": 2500,
+      "gpu": 0,
+      "mem_mib": 5120,
+      "pods": [
+        "serve-kserve-predictor-1",
+        "serve-plain-1"
+      ]
+    },
+    "node-cpu-b": {
+      "cpu_m": 2500,
+      "gpu": 0,
+      "mem_mib": 5120,
+      "pods": [
+        "serve-kserve-predictor-0",
+        "serve-plain-0"
+      ]
+    },
+    "node-gpu-a": {
+      "cpu_m": 0,
+      "gpu": 0,
+      "mem_mib": 0,
+      "pods": []
+    },
+    "node-gpu-b": {
+      "cpu_m": 0,
+      "gpu": 0,
+      "mem_mib": 0,
+      "pods": []
+    }
+  },
+  "note": "Build-level simulation on the Muse VM. No real kind, k3d, or cloud cluster, no containers, and no GPU hardware were contacted or run. Node names and capacities are teaching values standing for fleet CPU and GPU pool roles, not measured live cluster state. The training job stands for the P19 training job and the plain serving endpoint stands for the P03 serving endpoint, as SPEC.md Build names them.",
+  "pods_final": [
+    {
+      "cpu_lim_m": 750,
+      "cpu_req_m": 500,
+      "gpu": 0,
+      "kind": "pod",
+      "mem_lim_mib": 768,
+      "mem_req_mib": 512,
+      "name": "gpu-curious",
+      "namespace": "team-serve",
+      "node": null,
+      "owner": null,
+      "reason": "Unschedulable: nodeSelector mismatch; taint gpu=true:NoSchedule not tolerated",
+      "status": "Pending"
+    },
+    {
+      "cpu_lim_m": 2000,
+      "cpu_req_m": 1500,
+      "gpu": 0,
+      "kind": "predictor",
+      "mem_lim_mib": 4096,
+      "mem_req_mib": 3072,
+      "name": "serve-kserve-predictor-0",
+      "namespace": "team-serve",
+      "node": "node-cpu-b",
+      "owner": "serve-kserve",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_lim_m": 2000,
+      "cpu_req_m": 1500,
+      "gpu": 0,
+      "kind": "predictor",
+      "mem_lim_mib": 4096,
+      "mem_req_mib": 3072,
+      "name": "serve-kserve-predictor-1",
+      "namespace": "team-serve",
+      "node": "node-cpu-a",
+      "owner": "serve-kserve",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_lim_m": 1500,
+      "cpu_req_m": 1000,
+      "gpu": 0,
+      "kind": "serving",
+      "mem_lim_mib": 3072,
+      "mem_req_mib": 2048,
+      "name": "serve-plain-0",
+      "namespace": "team-serve",
+      "node": "node-cpu-b",
+      "owner": "serve-plain",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_lim_m": 1500,
+      "cpu_req_m": 1000,
+      "gpu": 0,
+      "kind": "serving",
+      "mem_lim_mib": 3072,
+      "mem_req_mib": 2048,
+      "name": "serve-plain-1",
+      "namespace": "team-serve",
+      "node": "node-cpu-a",
+      "owner": "serve-plain",
+      "reason": null,
+      "status": "Running"
+    },
+    {
+      "cpu_lim_m": 1500,
+      "cpu_req_m": 1000,
+      "gpu": 0,
+      "kind": "job",
+      "mem_lim_mib": 3072,
+      "mem_req_mib": 2048,
+      "name": "train-doomed-0",
+      "namespace": "team-train",
+      "node": "node-cpu-a",
+      "owner": "train-doomed",
+      "reason": "attempt failed (declared failure)",
+      "status": "Failed"
+    },
+    {
+      "cpu_lim_m": 1500,
+      "cpu_req_m": 1000,
+      "gpu": 0,
+      "kind": "job",
+      "mem_lim_mib": 3072,
+      "mem_req_mib": 2048,
+      "name": "train-doomed-1",
+      "namespace": "team-train",
+      "node": "node-cpu-a",
+      "owner": "train-doomed",
+      "reason": "attempt failed (declared failure)",
+      "status": "Failed"
+    },
+    {
+      "cpu_lim_m": 3000,
+      "cpu_req_m": 2000,
+      "gpu": 1,
+      "kind": "job",
+      "mem_lim_mib": 6144,
+      "mem_req_mib": 4096,
+      "name": "train-flaky-0",
+      "namespace": "team-train",
+      "node": "node-gpu-b",
+      "owner": "train-flaky",
+      "reason": "attempt failed (declared failure)",
+      "status": "Failed"
+    },
+    {
+      "cpu_lim_m": 3000,
+      "cpu_req_m": 2000,
+      "gpu": 1,
+      "kind": "job",
+      "mem_lim_mib": 6144,
+      "mem_req_mib": 4096,
+      "name": "train-flaky-1",
+      "namespace": "team-train",
+      "node": "node-gpu-a",
+      "owner": "train-flaky",
+      "reason": null,
+      "status": "Succeeded"
+    },
+    {
+      "cpu_lim_m": 16000,
+      "cpu_req_m": 16000,
+      "gpu": 0,
+      "kind": "pod",
+      "mem_lim_mib": 1024,
+      "mem_req_mib": 1024,
+      "name": "train-huge",
+      "namespace": "team-train",
+      "node": null,
+      "owner": null,
+      "reason": "Unschedulable: Insufficient cpu or memory or gpu",
+      "status": "Pending"
+    },
+    {
+      "cpu_lim_m": 6000,
+      "cpu_req_m": 4000,
+      "gpu": 1,
+      "kind": "job",
+      "mem_lim_mib": 12288,
+      "mem_req_mib": 8192,
+      "name": "train-v1-0",
+      "namespace": "team-train",
+      "node": "node-gpu-a",
+      "owner": "train-v1",
+      "reason": null,
+      "status": "Succeeded"
+    }
+  ],
+  "probes": {
+    "gpu_curious": {
+      "reason": "Unschedulable: nodeSelector mismatch; taint gpu=true:NoSchedule not tolerated",
+      "status": "Pending"
+    },
+    "train_huge": {
+      "reason": "Unschedulable: Insufficient cpu or memory or gpu",
+      "status": "Pending"
+    }
+  },
+  "project": "P20 ml-platform-lab",
+  "quota_at_admission": {
+    "team-sandbox": {
+      "cpu_m": 0,
+      "gpu": 0,
+      "mem_mib": 0,
+      "pods": 0
+    },
+    "team-serve": {
+      "cpu_m": 5500,
+      "gpu": 0,
+      "mem_mib": 10752,
+      "pods": 5
+    },
+    "team-train": {
+      "cpu_m": 23000,
+      "gpu": 2,
+      "mem_mib": 15360,
+      "pods": 4
+    }
+  },
+  "rejections": [
+    {
+      "namespace": "team-train",
+      "pod": "train-gpu-blocked-0",
+      "reason": "QuotaExceeded: gpu in namespace team-train: used 2 + requested 1 > quota 2"
+    },
+    {
+      "namespace": "team-sandbox",
+      "pod": "sandbox-gpu",
+      "reason": "QuotaExceeded: gpu in namespace team-sandbox: used 0 + requested 1 > quota 0"
+    }
+  ],
+  "serving_comparison": {
+    "kserve_style": {
+      "autoscaling_bounds_declared": true,
+      "backing_object": "InferenceService serve-kserve",
+      "endpoints": [
+        "serve-kserve-predictor-0",
+        "serve-kserve-predictor-1"
+      ],
+      "model_declared": true,
+      "requests_routed_10": {
+        "serve-kserve-predictor-0": 5,
+        "serve-kserve-predictor-1": 5
+      },
+      "spec": {
+        "max_replicas": 3,
+        "min_replicas": 1,
+        "model_name": "tiny-gpt",
+        "name": "serve-kserve",
+        "namespace": "team-serve",
+        "predictor_cpu_req_m": 1500,
+        "predictor_mem_req_mib": 3072,
+        "predictor_replicas": 2,
+        "storage_uri": "s3://simulated-bucket/models/tiny-gpt (simulated string, nothing downloaded)",
+        "target_metric": "concurrency 10 per predictor (declared only)"
+      },
+      "storage_uri_declared": true
+    },
+    "plain_service": {
+      "autoscaling_bounds_declared": false,
+      "backing_object": "Service serve-plain-svc",
+      "endpoints": [
+        "serve-plain-0",
+        "serve-plain-1"
+      ],
+      "model_declared": false,
+      "requests_routed_10": {
+        "serve-plain-0": 5,
+        "serve-plain-1": 5
+      },
+      "storage_uri_declared": false
+    }
+  },
+  "serving_placement": {
+    "serve-kserve-predictor-0": "node-cpu-b",
+    "serve-kserve-predictor-1": "node-cpu-a",
+    "serve-plain-0": "node-cpu-b",
+    "serve-plain-1": "node-cpu-a"
+  },
+  "simulated": true,
+  "summary": {
+    "admission_rejected": 2,
+    "gpu_nodes_used": [
+      "node-gpu-a",
+      "node-gpu-b"
+    ],
+    "gpu_pods_placed": 3,
+    "jobs_failed": 1,
+    "jobs_succeeded": 2,
+    "jobs_ticks_total": 9,
+    "jobs_total_attempts": 5,
+    "jobs_total_retries": 2,
+    "kserve_endpoints": 2,
+    "plain_endpoints": 2,
+    "pods_admitted": 11,
+    "pods_failed": 3,
+    "pods_pending": 2,
+    "pods_running": 4,
+    "pods_succeeded": 2,
+    "total_running_cpu_m": 5000,
+    "total_running_mem_mib": 10240
+  }
+}
