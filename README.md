@@ -5,6 +5,23 @@ ML platform operations: Kubernetes, containers, GPU scheduling, a small operator
 Status: Learn DONE, Build DONE, and Deep DONE 2026-11-05 (early, Sprint 4 pull). v1.0 shipped. All three levels are simulations, labelled as such: no real cluster was contacted at any level. The rest of the v2 Deep scope is the v1.1 backlog in ROADMAP.md.
 Project: P20. Fleet node: BlackBoxV2, BlackBoxV3, Dell R610 (cluster). Wave: Wave 6.
 
+Live dashboard: https://jesunahmadushno.github.io/ml-platform-lab/
+
+The dashboard (source in site/) runs JavaScript ports of the three simulators in the browser: a scheduler playground, a GPU and quota admission lab, a ModelEndpoint reconcile stepper, the simulated upgrade, and the modelled cost calculator. `npm run build` first runs site/src/sim.check.mjs, which replays run_learn.py, run_build.py and run_deep.py through the ports and deep-compares the output with the committed results files, so the page cannot drift from the Python. It is a simulation, labelled as such on every panel.
+
+## Tests
+
+The test files are plain scripts, as CI runs them:
+
+    python3 tests/test_smoke.py
+    python3 tests/test_learn_platform.py
+    python3 tests/test_build_platform.py
+    python3 tests/test_deep_platform.py
+    python3 tests/test_invariants.py      # seeded randomized invariant checks, all three levels
+    python3 tests/test_check_counts.py    # printed checks equal check( call sites (the dashboard's count)
+
+`python3 -m pytest` also works: tests/conftest.py stops level-2-build/platform.py from colliding with the standard library platform module during collection. Research rigor review: docs/research-review.md.
+
 ## Start here
 
 1. Read SPEC.md for scope and acceptance criteria.
