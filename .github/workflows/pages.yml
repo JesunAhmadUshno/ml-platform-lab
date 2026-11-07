@@ -1,0 +1,57 @@
+name: Pages
+
+# Builds the live dashboard in site/ from the committed level-*/results_*.json files,
+# the repo docs it quotes, and the check counts in tests/, then publishes it to GitHub Pages
+# at the repo root (https://jesunahmadushno.github.io/ml-platform-lab/).
+# The previous legacy Pages source (main:/docs, docs/index.md) holds a static text summary
+# only; Pages build_type must be switched from legacy to workflow for this deploy to go live.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'site/**'
+      - 'level-*/results_*.json'
+      - 'level-*/README.md'
+      - 'tests/**'
+      - 'ROADMAP.md'
+      - 'NOVELTY.md'
+      - 'docs/index.md'
+      - '.github/workflows/pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: site/package-lock.json
+      - run: npm ci
+        working-directory: site
+      - run: npm run build
+        working-directory: site
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: site/dist
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
