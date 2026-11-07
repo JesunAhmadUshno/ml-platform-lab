@@ -34,3 +34,7 @@ jobs:
         run: python tests/test_deep_platform.py
       - name: level 3 deep run
         run: python level-3-deep/run_deep.py
+      - name: randomized invariant tests
+        run: python tests/test_invariants.py
+      - name: check counts match call sites
+        run: python tests/test_check_counts.py
