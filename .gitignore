@@ -8,3 +8,9 @@ models/
 .env
 *.key
 secrets/
+
+# live dashboard build output and local browser-gate screenshots
+site/node_modules/
+site/dist/
+site/.rubric/
+.pytest_cache/
