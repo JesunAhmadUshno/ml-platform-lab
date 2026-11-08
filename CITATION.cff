@@ -1,0 +1,10 @@
+cff-version: 1.2.0
+message: "If you use this work, please cite it as below."
+title: "ml-platform-lab: a simulated ML platform on Kubernetes, with a path to a real-cluster drill"
+authors:
+  - family-names: Ushno
+    given-names: Jesun Ahmad
+repository-code: "https://github.com/JesunAhmadUshno/ml-platform-lab"
+url: "https://jesunahmadushno.github.io/ml-platform-lab/"
+license: Apache-2.0
+date-released: 2026-11-05
