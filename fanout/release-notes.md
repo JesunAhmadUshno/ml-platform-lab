@@ -18,7 +18,6 @@ https://github.com/JesunAhmadUshno/ml-platform-lab/releases
   Deleted, final endpoints 3, total running requests 4750m cpu
   and 4864 MiB, ConfigMap rollout leaving 2 api pods stale at
   MAX_BATCH 8 and 1 fresh at 16.
-- Level grade: 8,700 of 10,000.
 - Release: https://github.com/JesunAhmadUshno/ml-platform-lab/releases/tag/v0.1
 
 ## v0.5, Build (2026-11-05)
@@ -31,7 +30,6 @@ https://github.com/JesunAhmadUshno/ml-platform-lab/releases
   and 9 ticks, GPU pods on both GPU nodes, both services at 2
   endpoints routing 10 requests at 5 per endpoint, final Running
   4 pods at 5000m cpu and 10240 MiB.
-- Level grade: 8,500 of 10,000.
 - Release: https://github.com/JesunAhmadUshno/ml-platform-lab/releases/tag/v0.5
 
 ## v1.0, Learn, Build, and Deep (2026-11-05)
@@ -50,7 +48,6 @@ https://github.com/JesunAhmadUshno/ml-platform-lab/releases
   1.29 to 1.30 in 11 steps, 4 pre-checks and 4 post-checks
   passing, no rollback; modelled illustrative cost 130 USD per
   month.
-- Level grade: 8,200 of 10,000.
 - Release: https://github.com/JesunAhmadUshno/ml-platform-lab/releases/tag/v1.0
 
 ## Held channels

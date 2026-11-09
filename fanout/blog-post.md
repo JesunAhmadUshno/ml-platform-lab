@@ -32,16 +32,14 @@ teaching values, not measurements.
 Learn: the four core objects (Pod, Deployment, Service,
 ConfigMap) over 3 simulated fleet nodes, with the ConfigMap sharp
 edge proven: a pod snapshots config at creation, so an edit
-leaves running pods stale until recreation. Grade 8,700 of 10,000.
+leaves running pods stale until recreation.
 
 Build: jobs with retries, requests and limits, GPU scheduling
 with nodeSelector and taint tolerations, namespaces with quotas,
 and a plain Service beside a KServe-style InferenceService.
-Grade 8,500 of 10,000.
 
 Deep: a simulated ModelEndpoint operator, a simulated cluster
 upgrade, a modelled cost page, and written failure modes.
-Grade 8,200 of 10,000.
 
 ## The main result
 

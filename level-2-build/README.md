@@ -120,20 +120,3 @@ for them and are labelled as such. No Ray Serve (the KServe-style
 option in SPEC.md was chosen). Autoscaling bounds are declarations
 only; no autoscaler acts on them. No operator or CRD controller:
 that is Deep scope.
-
-## Grade
-
-Grade: P20 Build 8,500 of 10,000.
-Deductions: simulated cluster only, no real kind or k3d cluster and
-no real jobs run on any cluster (minus 600); the P19 training job
-and P03 serving endpoint are simulated stand-ins, not the real
-workloads (minus 300); run on the Muse VM, not the assigned fleet
-cluster nodes BlackBoxV2, BlackBoxV3, and the Dell R610 (minus
-200); one small designed scenario, 11 admitted pods in a single run
-(minus 200); autoscaling bounds declared only, no autoscaler
-actuation (minus 100); KServe-style object is a model of KServe,
-not KServe or Ray Serve running (minus 100).
-Zero-tolerance: PASS (no invented claim, every number measured by
-the runner or hand-computed and test-asserted, simulated values
-labelled simulated, em dash count 0 in all touched files, scaffold
-never graded as a build).

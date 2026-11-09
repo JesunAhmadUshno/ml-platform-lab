@@ -35,8 +35,7 @@ deleted pod, a tampered pod, and an extra pod, and runs a
 simulated cluster upgrade 1.29 to 1.30 in 11 steps. Modelled
 cost: 130 USD per month, illustrative only.
 
-Grades, house scale: Learn 8,700, Build 8,500, Deep 8,200 of
-10,000. 96 checks in total, plus the smoke test. The real cluster
+96 checks in total, plus the smoke test. The real cluster
 proof is the first v1.1 item, and it is not claimed here.
 
 What did your first real cluster teach you that no simulation

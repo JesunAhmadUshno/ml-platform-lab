@@ -96,19 +96,3 @@ scheduler rule. Those are Build and Deep scope in SPEC.md. The P03
 container drill named as the entry ticket in SPEC.md is served here
 only as the pod and resource-request model; the real container work
 stays with P03 and with P20 Build.
-
-## Grade
-
-Grade: P20 Learn 8,700 of 10,000.
-Deductions: small synthetic designed scenario, one 10-pod run
-(minus 500); simulated cluster only, no real kind or k3d cluster and
-no live fleet nodes contacted (minus 400); run on the Muse VM, not
-the assigned fleet cluster nodes BlackBoxV2, BlackBoxV3, and the
-Dell R610 (minus 200); scheduler is one documented rule only, no
-labels, taints, affinity, or GPU scheduling (minus 100); no
-namespaces, resource quotas, or rolling update strategy beyond a
-single-pod recreate (minus 100).
-Zero-tolerance: PASS (no invented claim, every number measured by
-the runner or hand-computed and test-asserted, simulated values
-labelled simulated, em dash count 0 in all touched files, scaffold
-never graded as a build).

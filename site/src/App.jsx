@@ -2,9 +2,9 @@ import { useMemo, useState, useEffect, useId, useCallback } from 'react';
 import learnJson from '../../level-1-learn/results_learn.json';
 import buildJson from '../../level-2-build/results_build.json';
 import deepJson from '../../level-3-deep/results_deep.json';
-import roadmapMd from '../../ROADMAP.md?raw';
-import noveltyMd from '../../NOVELTY.md?raw';
-import docsIndexMd from '../../docs/index.md?raw';
+import reportMd from '../../REPORT.md?raw';
+import proposalMd from '../../PROPOSAL.md?raw';
+import readmeMd from '../../README.md?raw';
 import learnReadme from '../../level-1-learn/README.md?raw';
 import buildReadme from '../../level-2-build/README.md?raw';
 import deepReadme from '../../level-3-deep/README.md?raw';
@@ -30,9 +30,10 @@ const CHECK_TOTAL = Object.values(CHECKS).reduce((s, v) => s + v, 0);
 // Markdown sections read from the repo at build time.
 const section = (md, head) => { const i = md.indexOf(head); if (i < 0) return ''; const rest = md.slice(i + head.length); const j = rest.search(/\n## /); return (j < 0 ? rest : rest.slice(0, j)).trim(); };
 const oneLine = (s) => s.replace(/\s*\n\s*/g, ' ').trim();
-const ROADMAP_ITEMS = section(roadmapMd, '## v1.1 backlog (named, not built)').split(/\n(?=\d+\. )/).map((s) => oneLine(s.replace(/^\d+\.\s*/, ''))).filter(Boolean);
-const NOVELTY_STATUS = (noveltyMd.match(/^Status: (.*)$/m) || [])[1] || '';
-const GRADES_LINE = (docsIndexMd.match(/^Grades on record.*$/m) || [])[0] || '';
+const ROADMAP_ITEMS = section(reportMd, '## v1.1 backlog (named, not built)').split(/\n### /)[0].split(/\n(?=\d+\. )/).map((s) => oneLine(s.replace(/^\d+\.\s*/, ''))).filter(Boolean);
+const NOVELTY_STATUS = (section(proposalMd, '## Prior work and novelty (NOVELTY.md, draft)').match(/^Status: (.*)$/m) || [])[1] || '';
+// The verdict sentence from the README abstract, e.g. "Draft, not pre-registered."
+const VERDICT = (oneLine(readmeMd).match(/\*\*Verdict\.\*\* (.*?\.)/) || [])[1] || '';
 const DEEP_FAILURES = section(deepReadme, '## Failure modes').split(/\n- /).map((s) => oneLine(s.replace(/^- /, ''))).filter(Boolean).map((s) => { const k = s.indexOf(':'); return { title: s.slice(0, k), body: s.slice(k + 1).trim() }; });
 const LEARN_BREAKS = [...learnReadme.matchAll(/### (\w+)\nWhat it is:[\s\S]*?What breaks without it: ([\s\S]*?)\n(?:In the scenario|The sharp edge)/g)].map((m) => ({ title: m[1], body: oneLine(m[2]) }));
 const NOT_DONE = [['Learn', learnReadme], ['Build', buildReadme], ['Deep', deepReadme]].map(([l, md]) => [l, oneLine(section(md, '## What this level does not do'))]);
@@ -56,9 +57,9 @@ function MenuBar() {
     <div className="menubar" role="banner">
       <span className="apple" aria-hidden="true">◆</span>
       <a className="app" href="#top">cluster.app</a>
-      <a className="m" href={blob('SPEC.md')}>Spec</a>
-      <a className="m" href={blob('ROADMAP.md')}>Roadmap</a>
-      <a className="m" href={blob('docs/research-review.md')}>Research review</a>
+      <a className="m" href={blob('PROPOSAL.md')}>Proposal</a>
+      <a className="m" href={blob('REPORT.md')}>Report</a>
+      <a className="m" href={blob('README.md')}>Verdict</a>
       <span className="spacer" />
       <span className="status"><i className="sim" /> Simulation · CI reproducible</span>
       <a href={REPO}>GitHub ↗</a>
@@ -784,9 +785,9 @@ function Method() {
     ['level-1-learn/cluster.py', 'cluster.py', 'Learn simulator'],
     ['level-2-build/platform.py', 'platform.py', 'Build simulator'],
     ['level-3-deep/deep_operator.py', 'deep_operator.py', 'Deep operator'],
-    ['ROADMAP.md', 'ROADMAP.md', 'v1.1 backlog, not built'],
-    ['NOVELTY.md', 'NOVELTY.md', 'Draft, unverified'],
-    ['docs/research-review.md', 'Research review', 'Rigor grade and gaps'],
+    ['PROPOSAL.md', 'PROPOSAL.md', 'Question, draft hypotheses, novelty (not locked)'],
+    ['REPORT.md', 'REPORT.md', 'Results, misses, research review, v1.1 backlog'],
+    ['README.md', 'README.md', 'Abstract, lifecycle and verdict'],
   ];
   return (
     <section id="method" className="card window reveal" data-title="README.md — method and honesty">
@@ -795,8 +796,8 @@ function Method() {
       <div className="grid2" style={{ marginTop: 16 }}>
         <div className="tile"><h3>The port is proven equal</h3><p className="hint"><code>npm run build</code> first runs <code>src/sim.check.mjs</code>: it replays run_learn.py, run_build.py and run_deep.py through the JavaScript ports and deep-compares every computed field with the three committed results files (only the descriptive note fields are skipped). One differing value fails the build, so a deployed page cannot drift from the Python.</p></div>
         <div className="tile"><h3>Deterministic by construction</h3><p className="hint">Iteration is over sorted names, ties break by node name, and no result carries a wall-clock field, so the Python runners write byte-identical files on every run and CI diffs them. The fuzzer is seeded, so a run repeats from its seed.</p></div>
-        <div className="tile"><h3>Novelty: <span className="pill warn">DRAFT, unverified</span></h3><p className="hint">NOVELTY.md says: <q>{NOVELTY_STATUS}</q> Its prior-art table has no measurement yet. Related work is reviewed in docs/research-review.md.</p></div>
-        <div className="tile"><h3>Grades: <span className="pill warn">self-assessed</span></h3><p className="hint">docs/index.md records: <q>{GRADES_LINE}</q> These are the author&apos;s own grades, with no external rubric behind them. They are not external validation.</p></div>
+        <div className="tile"><h3>Novelty: <span className="pill warn">DRAFT, unverified</span></h3><p className="hint">The novelty section of PROPOSAL.md says: <q>{NOVELTY_STATUS}</q> Its prior-art table has no measurement yet. Related work is reviewed in REPORT.md.</p></div>
+        <div className="tile"><h3>Verdict: <span className="pill warn">{VERDICT}</span></h3><p className="hint">From the README abstract, under the portfolio standard v2: the simulators are tested and reproducible, but the system under study, a real Kubernetes platform, has not run yet, and no plan was locked before the results.</p></div>
       </div>
       <h3 style={{ marginTop: 20 }}>Limits and threats to validity</h3>
       <ul className="limits">
@@ -805,7 +806,7 @@ function Method() {
         <li><b>Simple models:</b> the scheduler scores on cpu only (memory and GPU are fit checks), taints model NoSchedule only, jobs run one at a time with declared failures, and the operator replaces pods in name order without an availability guard.</li>
         {NOT_DONE.map(([l, t]) => <li key={l}><b>{l} README, what this level does not do:</b> {t}</li>)}
       </ul>
-      <h3 style={{ marginTop: 20 }}>v1.1 backlog from ROADMAP.md (named, not built)</h3>
+      <h3 style={{ marginTop: 20 }}>v1.1 backlog from REPORT.md (named, not built)</h3>
       <ol className="steps" style={{ marginTop: 10 }}>
         {ROADMAP_ITEMS.map((t, i) => <li key={i}><span className="n">{i + 1}</span><div className="hint">{t}</div></li>)}
       </ol>

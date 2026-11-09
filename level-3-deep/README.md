@@ -176,22 +176,3 @@ upgrade. No admission webhooks, no rolling update strategy beyond
 replace in name order, no availability guard during replaces, no
 multi endpoint or multi tenant operator scope, and no real cost
 data. Those items are the v1.1 backlog in ROADMAP.md.
-
-## Grade
-
-Grade: P20 Deep 8,200 of 10,000.
-Deductions: simulated only, no real cluster, no real operator
-deployment, and no real version upgrade (minus 700); one small
-designed scenario, a single endpoint with 3 replicas (minus 300);
-compressed Deep scope, with the rest of the v2 Deep scope named
-as the v1.1 backlog in ROADMAP.md (minus 300); run on the Muse
-VM, not the assigned fleet cluster nodes BlackBoxV2, BlackBoxV3,
-and the Dell R610 (minus 200); replaces run in name order only,
-with no rolling update strategy or availability guard (minus
-150); cost figures modelled with invented unit prices, no real
-cost data behind the cost page (minus 150).
-Zero-tolerance: PASS (no invented claim, every number measured by
-the runner or hand-computed and test-asserted, simulated values
-labelled simulated, modelled cost labelled modelled and
-illustrative, em dash count 0 in all touched files, scaffold
-never graded as a build).
