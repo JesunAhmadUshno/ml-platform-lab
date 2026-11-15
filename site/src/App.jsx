@@ -38,7 +38,7 @@ const DEEP_FAILURES = section(deepReadme, '## Failure modes').split(/\n- /).map(
 const LEARN_BREAKS = [...learnReadme.matchAll(/### (\w+)\nWhat it is:[\s\S]*?What breaks without it: ([\s\S]*?)\n(?:In the scenario|The sharp edge)/g)].map((m) => ({ title: m[1], body: oneLine(m[2]) }));
 const NOT_DONE = [['Learn', learnReadme], ['Build', buildReadme], ['Deep', deepReadme]].map(([l, md]) => [l, oneLine(section(md, '## What this level does not do'))]);
 
-const SECTIONS = [['top', 'Overview', '◎'], ['learn', 'Scheduler', '▦'], ['build', 'Admission', '⛨'], ['operator', 'Operator', '↻'], ['upgrade', 'Upgrade', '⇡'], ['cost', 'Cost', '$'], ['explorer', 'Recorded', '▤'], ['fuzz', 'Invariants', '✓'], ['failures', 'Failures', '!'], ['method', 'Method', '❯_']];
+const SECTIONS = [['top', 'Overview', '◎'], ['learn', 'Scheduler', '▦'], ['build', 'Admission', '⛨'], ['operator', 'Operator', '↻'], ['flow', 'Flow', '⇄'], ['upgrade', 'Upgrade', '⇡'], ['cost', 'Cost', '$'], ['explorer', 'Recorded', '▤'], ['fuzz', 'Invariants', '✓'], ['failures', 'Failures', '!'], ['method', 'Method', '❯_']];
 
 function useReveal() {
   useEffect(() => {
@@ -156,6 +156,7 @@ export default function App() {
       <Jobs />
       <Serving />
       <Operator ops={deepOps} setOps={setDeepOps} />
+      <PlatformFlow />
       <Upgrade healthy={healthy} setHealthy={setHealthy} />
       <Cost />
       <Explorer />
@@ -493,6 +494,42 @@ function Serving() {
     </section>
   );
 }
+
+function PlatformFlow() {
+  const box = (x, y, w, title, sub) => (
+    <g key={title}>
+      <rect x={x} y={y} width={w} height={54} rx={12} fill="var(--surface-strong)" stroke="var(--border)" />
+      <text x={x + w / 2} y={y + 23} textAnchor="middle" fill="var(--text)" fontSize={13} fontWeight={600}>{title}</text>
+      <text x={x + w / 2} y={y + 41} textAnchor="middle">{sub}</text>
+    </g>
+  );
+  const arrow = (x1, y1, x2, y2, key) => (
+    <path key={key} d={`M${x1} ${y1} L${x2} ${y2}`} stroke="var(--muted)" strokeWidth={1.5} fill="none" markerEnd="url(#pf-ah)" />
+  );
+  return (
+    <section id="flow" className="card window reveal" data-title="platform-flow.svg">
+      <p className="eyebrow">How the platform fits together</p>
+      <h2>One job, <em>five handoffs</em>, a kept promise.</h2>
+      <svg className="chart" viewBox="0 0 960 250" role="img" aria-label="Platform flow: a job request goes to the scheduler, passes a quota check, lands on GPU nodes, and serves as a model endpoint, which the operator keeps at its declared version" style={{ marginTop: 16 }}>
+        <defs><marker id="pf-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)" /></marker></defs>
+        {box(10, 30, 150, 'Job request', 'job spec')}
+        {box(205, 30, 150, 'Scheduler', 'cluster.py')}
+        {box(400, 30, 150, 'Quota check', 'namespace quotas')}
+        {box(595, 30, 150, 'GPU nodes', 'fleet GPUs')}
+        {box(790, 30, 150, 'Model endpoint', 'serving.yaml')}
+        {box(692, 160, 150, 'Operator', 'deep_operator.py')}
+        {arrow(160, 57, 201, 57, 'b1')}
+        {arrow(355, 57, 396, 57, 'b2')}
+        {arrow(550, 57, 591, 57, 'b3')}
+        {arrow(745, 57, 786, 57, 'b4')}
+        {arrow(790, 187, 838, 88, 'b5')}
+        <text x={724} y={140}>keeps declared version</text>
+      </svg>
+    </section>
+  );
+}
+
+/* ================================ Jobs ================================ */
 
 /* ================================ Deep: operator ================================ */
 function Operator({ ops, setOps }) {
