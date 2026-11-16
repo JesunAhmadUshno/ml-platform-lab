@@ -38,7 +38,7 @@ const DEEP_FAILURES = section(deepReadme, '## Failure modes').split(/\n- /).map(
 const LEARN_BREAKS = [...learnReadme.matchAll(/### (\w+)\nWhat it is:[\s\S]*?What breaks without it: ([\s\S]*?)\n(?:In the scenario|The sharp edge)/g)].map((m) => ({ title: m[1], body: oneLine(m[2]) }));
 const NOT_DONE = [['Learn', learnReadme], ['Build', buildReadme], ['Deep', deepReadme]].map(([l, md]) => [l, oneLine(section(md, '## What this level does not do'))]);
 
-const SECTIONS = [['top', 'Overview', '◎'], ['learn', 'Scheduler', '▦'], ['build', 'Admission', '⛨'], ['operator', 'Operator', '↻'], ['upgrade', 'Upgrade', '⇡'], ['cost', 'Cost', '$'], ['explorer', 'Recorded', '▤'], ['fuzz', 'Invariants', '✓'], ['failures', 'Failures', '!'], ['method', 'Method', '❯_']];
+const SECTIONS = [['top', 'Overview', '◎'], ['learn', 'Scheduler', '▦'], ['build', 'Admission', '⛨'], ['operator', 'Operator', '↻'], ['flow', 'Flow', '⇄'], ['upgrade', 'Upgrade', '⇡'], ['cost', 'Cost', '$'], ['explorer', 'Recorded', '▤'], ['fuzz', 'Invariants', '✓'], ['failures', 'Failures', '!'], ['method', 'Method', '❯_']];
 
 function useReveal() {
   useEffect(() => {
@@ -147,7 +147,7 @@ export default function App() {
   const [healthy, setHealthy] = useState(deepJson.endpoint_healthy_final);
   const go = useCallback((id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), []);
   return (
-    <div className="wrap">
+    <div className="wrap"><a className="skip" href="#top">Skip to content</a>
       <MenuBar />
       <div className="glow" aria-hidden="true" />
       <Hero />
@@ -156,6 +156,7 @@ export default function App() {
       <Jobs />
       <Serving />
       <Operator ops={deepOps} setOps={setDeepOps} />
+      <PlatformFlow />
       <Upgrade healthy={healthy} setHealthy={setHealthy} />
       <Cost />
       <Explorer />
@@ -165,7 +166,7 @@ export default function App() {
       <Dock />
       <footer>
         Code: Apache-2.0. Every number on this page is read from <code>level-*/results_*.json</code>, the repo docs, or <code>tests/</code> at build time, or computed live in your browser by JavaScript ports of the repo&apos;s simulators. Nothing here is a real cluster.
-      </footer>
+      <nav className="support" aria-label="Support this work"><a href="https://github.com/sponsors/JesunAhmadUshno">Sponsor this work</a><a href="https://github.com/sponsors/JesunAhmadUshno">Donate</a><a href="https://buymeacoffee.com/jesun">Buy Me a Coffee</a><a href="https://calendly.com/jesunahmadushno/30min">Work with me</a></nav></footer>
     </div>
   );
 }
@@ -174,7 +175,7 @@ export default function App() {
 function Hero() {
   const L = learnJson.summary, B = buildJson.summary, D = deepJson.summary;
   return (
-    <header className="card hero window" id="top" data-title="cluster.app — README.md">
+    <header className="card hero window" id="top" data-title="cluster.app - README.md">
       <div className="head">
         <p className="eyebrow">ml-platform-lab · Learn, Build, Deep</p>
         <span className="pill warn">● Simulated, no real cluster</span>
@@ -247,7 +248,7 @@ function Learn({ ops, setOps }) {
   const deps = [...c.deployments.values()];
   const pending = pods.filter((p) => p.status === 'Pending');
   return (
-    <section id="learn" className="card window reveal" data-title="cluster.py — scheduler playground (live)">
+    <section id="learn" className="card window reveal" data-title="cluster.py - scheduler playground (live)">
       <div className="head">
         <div>
           <p className="eyebrow">Learn · live simulation</p>
@@ -315,7 +316,7 @@ function PodTable({ rows, cols, wide }) {
   return (
     <table className={wide ? 'wide' : undefined}>
       <thead><tr>{cols.map((c) => <th key={c}>{c}</th>)}</tr></thead>
-      <tbody>{rows.map((r, i) => <tr key={r.name ?? i}>{cols.map((c) => <td key={c} className={c === 'status' ? `st-${r[c]}` : ''}>{r[c] === null || r[c] === undefined ? '—' : String(r[c])}</td>)}</tr>)}</tbody>
+      <tbody>{rows.map((r, i) => <tr key={r.name ?? i}>{cols.map((c) => <td key={c} className={c === 'status' ? `st-${r[c]}` : ''}>{r[c] === null || r[c] === undefined ? '-' : String(r[c])}</td>)}</tr>)}</tbody>
     </table>
   );
 }
@@ -340,7 +341,7 @@ function Admission({ spec, setSpec }) {
   ];
   const nsList = [...base.namespaces.keys()];
   return (
-    <section id="build" className="card window reveal" data-title="platform.py — GPU and quota admission lab (live)">
+    <section id="build" className="card window reveal" data-title="platform.py - GPU and quota admission lab (live)">
       <div className="head">
         <div>
           <p className="eyebrow">Build · live simulation</p>
@@ -424,7 +425,7 @@ function Jobs() {
   });
   const S = buildJson.summary;
   return (
-    <section id="jobs" className="card window reveal" data-title="jobs.log — job retry timeline (recorded)">
+    <section id="jobs" className="card window reveal" data-title="jobs.log - job retry timeline (recorded)">
       <div className="head">
         <div>
           <p className="eyebrow">Build · recorded scenario output, from results_build.json</p>
@@ -463,12 +464,12 @@ function Serving() {
     ['Model', P.model_declared ? 'declared' : 'not declared', K.spec.model_name],
     ['Storage URI', P.storage_uri_declared ? 'declared' : 'not declared', K.spec.storage_uri],
     ['Autoscaling bounds', P.autoscaling_bounds_declared ? 'declared' : 'not declared', `min ${K.spec.min_replicas}, max ${K.spec.max_replicas} (declared only)`],
-    ['Target metric', '—', K.spec.target_metric],
+    ['Target metric', '-', K.spec.target_metric],
     ['Endpoints', P.endpoints.join(', '), K.endpoints.join(', ')],
   ];
   const sides = [['Plain Service', P], ['KServe-style InferenceService', K]];
   return (
-    <section id="serving" className="card window reveal" data-title="serving.yaml — Service vs InferenceService">
+    <section id="serving" className="card window reveal" data-title="serving.yaml - Service vs InferenceService">
       <p className="eyebrow">Build · what each object declares</p>
       <h2>Same traffic, but only one of them <em>knows it serves a model</em>.</h2>
       <p className="sub">The comparison is about declarations, not behaviour: no autoscaler acts on the bounds in this simulation. Values from <code>serving_comparison</code> in results_build.json; routing below is the same round-robin rule, live.</p>
@@ -494,6 +495,42 @@ function Serving() {
   );
 }
 
+function PlatformFlow() {
+  const box = (x, y, w, title, sub) => (
+    <g key={title}>
+      <rect x={x} y={y} width={w} height={54} rx={12} fill="var(--surface-strong)" stroke="var(--border)" />
+      <text x={x + w / 2} y={y + 23} textAnchor="middle" fill="var(--text)" fontSize={13} fontWeight={600}>{title}</text>
+      <text x={x + w / 2} y={y + 41} textAnchor="middle">{sub}</text>
+    </g>
+  );
+  const arrow = (x1, y1, x2, y2, key) => (
+    <path key={key} d={`M${x1} ${y1} L${x2} ${y2}`} stroke="var(--muted)" strokeWidth={1.5} fill="none" markerEnd="url(#pf-ah)" />
+  );
+  return (
+    <section id="flow" className="card window reveal" data-title="platform-flow.svg">
+      <p className="eyebrow">How the platform fits together</p>
+      <h2>One job, <em>five handoffs</em>, a kept promise.</h2>
+      <svg className="chart" viewBox="0 0 960 250" role="img" aria-label="Platform flow: a job request goes to the scheduler, passes a quota check, lands on GPU nodes, and serves as a model endpoint, which the operator keeps at its declared version" style={{ marginTop: 16 }}>
+        <defs><marker id="pf-ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="var(--muted)" /></marker></defs>
+        {box(10, 30, 150, 'Job request', 'job spec')}
+        {box(205, 30, 150, 'Scheduler', 'cluster.py')}
+        {box(400, 30, 150, 'Quota check', 'namespace quotas')}
+        {box(595, 30, 150, 'GPU nodes', 'fleet GPUs')}
+        {box(790, 30, 150, 'Model endpoint', 'serving.yaml')}
+        {box(692, 160, 150, 'Operator', 'deep_operator.py')}
+        {arrow(160, 57, 201, 57, 'b1')}
+        {arrow(355, 57, 396, 57, 'b2')}
+        {arrow(550, 57, 591, 57, 'b3')}
+        {arrow(745, 57, 786, 57, 'b4')}
+        {arrow(790, 187, 838, 88, 'b5')}
+        <text x={724} y={140}>keeps declared version</text>
+      </svg>
+    </section>
+  );
+}
+
+/* ================================ Jobs ================================ */
+
 /* ================================ Deep: operator ================================ */
 function Operator({ ops, setOps }) {
   const { ctl, passes } = useMemo(() => applyDeep(ops), [ops]);
@@ -512,7 +549,7 @@ function Operator({ ops, setOps }) {
   const matches = eq(ctl.action_log, deepJson.action_log) && eq(live, deepJson.final_pods);
   const other = ep.version === 'v1' ? 'v2' : 'v1';
   return (
-    <section id="operator" className="card window reveal" data-title="deep_operator.py — ModelEndpoint reconcile stepper (live)">
+    <section id="operator" className="card window reveal" data-title="deep_operator.py - ModelEndpoint reconcile stepper (live)">
       <div className="head">
         <div>
           <p className="eyebrow">Deep · live simulation</p>
@@ -561,7 +598,7 @@ function Operator({ ops, setOps }) {
           <h3>Action log ({ctl.action_log.length})</h3>
           <table>
             <thead><tr><th>seq</th><th>pass</th><th>action</th><th>pod</th><th>from → to</th></tr></thead>
-            <tbody>{ctl.action_log.map((a) => <tr key={a.seq}><td>{a.seq}</td><td>{a.pass}</td><td>{a.action}</td><td className="mono">{a.pod}</td><td>{a.from_version ?? '—'} → {a.to_version ?? '—'}</td></tr>)}</tbody>
+            <tbody>{ctl.action_log.map((a) => <tr key={a.seq}><td>{a.seq}</td><td>{a.pass}</td><td>{a.action}</td><td className="mono">{a.pod}</td><td>{a.from_version ?? '-'} → {a.to_version ?? '-'}</td></tr>)}</tbody>
           </table>
         </div>
       </div>
@@ -578,7 +615,7 @@ function Upgrade({ healthy, setHealthy }) {
       <ul className="checklist">{items.map((c) => <li key={c.name} className={c.pass ? 'ok' : 'no'}>{c.pass ? '✓' : '✗'} {c.name}</li>)}</ul></div>
   );
   return (
-    <section id="upgrade" className="card window reveal" data-title={`upgrade.log — simulated ${up.from_version} → ${up.to_version}`}>
+    <section id="upgrade" className="card window reveal" data-title={`upgrade.log - simulated ${up.from_version} → ${up.to_version}`}>
       <div className="head">
         <div>
           <p className="eyebrow">Deep · live simulation of ClusterUpgrade.run_upgrade()</p>
@@ -612,7 +649,7 @@ function Cost() {
   const isDefault = nodes === a.nodes && per === a.modelled_usd_per_node_per_month && st === a.modelled_storage_usd_per_month;
   const W = 360, H = 46, tot = Math.max(1, m.total_modelled_usd_per_month), w = (v) => (v / tot) * W;
   return (
-    <section id="cost" className="card window reveal" data-title="cost_model.py — modelled cost calculator">
+    <section id="cost" className="card window reveal" data-title="cost_model.py - modelled cost calculator">
       <div className="head">
         <div>
           <p className="eyebrow">Deep · live calculator</p>
@@ -662,7 +699,7 @@ function Explorer() {
     ['Build node_usage_final, cpu requests (m)', BUILD_NODES.map(([n, cpu]) => ({ name: n, cap: cpu, used: buildJson.node_usage_final[n].cpu_m, pods: buildJson.node_usage_final[n].pods.map((p) => buildJson.pods_final.find((q) => q.name === p)) })), 'cpu_req_m'],
   ];
   return (
-    <section id="explorer" className="card window reveal" data-title="results_*.json — recorded results explorer">
+    <section id="explorer" className="card window reveal" data-title="results_*.json - recorded results explorer">
       <div className="head">
         <div>
           <p className="eyebrow">Recorded scenario output, from results_*.json</p>
@@ -677,7 +714,7 @@ function Explorer() {
         <table className="wide">
           <caption className="hint">{label}: {rows.length} rows</caption>
           <thead><tr>{cols.map((c) => <th key={c} aria-sort={sort.k === c ? (sort.dir > 0 ? 'ascending' : 'descending') : 'none'}><button className="th-btn" onClick={() => setSort((s) => ({ k: c, dir: s.k === c ? -s.dir : 1 }))}>{c}{sort.k === c ? (sort.dir > 0 ? ' ▲' : ' ▼') : ''}</button></th>)}</tr></thead>
-          <tbody>{rows.map((r, i) => <tr key={i}>{cols.map((c) => <td key={c} className={c === 'status' ? `st-${r[c]}` : ''}>{r[c] === null || r[c] === undefined ? '—' : String(r[c])}</td>)}</tr>)}</tbody>
+          <tbody>{rows.map((r, i) => <tr key={i}>{cols.map((c) => <td key={c} className={c === 'status' ? `st-${r[c]}` : ''}>{r[c] === null || r[c] === undefined ? '-' : String(r[c])}</td>)}</tr>)}</tbody>
         </table>
       </div>
       <div className="grid2" style={{ marginTop: 18 }}>
@@ -701,7 +738,7 @@ function Fuzz() {
   useEffect(() => { run(); }, []); // eslint-disable-line react-hooks/exhaustive-deps
   const seedId = useId();
   return (
-    <section id="fuzz" className="card window reveal" data-title="fuzz.js — randomized invariant check (new exploration)">
+    <section id="fuzz" className="card window reveal" data-title="fuzz.js - randomized invariant check (new exploration)">
       <div className="head">
         <div>
           <p className="eyebrow">New exploration · in-browser property check of the repo&apos;s rules, not a repo result</p>
@@ -757,7 +794,7 @@ function Failures({ act }) {
     ['Build: recorded rejections and Pending reasons', 'level-2-build/results_build.json', buildItems],
   ];
   return (
-    <section id="failures" className="card window reveal" data-title="failure_modes.md — linked to the playgrounds">
+    <section id="failures" className="card window reveal" data-title="failure_modes.md - linked to the playgrounds">
       <p className="eyebrow">Failure modes, as written in the repo</p>
       <h2>Each failure, and <em>the state that shows it</em>.</h2>
       <p className="sub">Text is read from the repo at build time. Each button loads the matching state into a playground above.</p>
@@ -790,7 +827,7 @@ function Method() {
     ['README.md', 'README.md', 'Abstract, lifecycle and verdict'],
   ];
   return (
-    <section id="method" className="card window reveal" data-title="README.md — method and honesty">
+    <section id="method" className="card window reveal" data-title="README.md - method and honesty">
       <p className="eyebrow">Method, limits and honesty</p>
       <h2>How you can tell this page is <em>the repo&apos;s rules</em>, and what it cannot tell you.</h2>
       <div className="grid2" style={{ marginTop: 16 }}>
